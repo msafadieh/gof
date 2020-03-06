@@ -4,7 +4,7 @@
 	const bgcolor = "black";
 	const fgcolor = "purple";
 	const gps = 10;			 // generations per second
-	const aliveodds = 0.5	 // probability of living cell in initial grid generation
+	const aliveodds = 0.5;	 // probability of living cell in initial grid generation
 	const cwidth = 0.95 * window.innerWidth;
 	const cheight = 0.95 * window.innerHeight;
 	const hcount = Math.floor(cwidth / size);
@@ -83,6 +83,7 @@
 		const { body } = document;
 		body.style.background = bgcolor;
 		body.style.margin = 0;
+		body.style["margin-top"] = (0.025 * window.innerHeight) + "px";
 		body.appendChild(canvas);
 	}
 
