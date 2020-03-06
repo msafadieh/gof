@@ -12,11 +12,11 @@
 
 	// returns a random initial generation
 	function generate_grid(x, y) {
-		grid = []
+		const grid = []
 		for (let i = 0; i < x; i++) {
-			row = [];
+			const row = [];
 			for (let j = 0; j < y; j++) {
-				let alive = Math.random() < aliveodds;
+				const alive = Math.random() < aliveodds;
 				row.push(alive);
 			}
 			grid.push(row);
@@ -31,8 +31,8 @@
 			for (let offset_y = -1; offset_y < 2; offset_y++) {
 
 				if (offset_y || offset_x) {
-					let tmp_x = x + offset_x;
-					let tmp_y = y + offset_y;
+					const tmp_x = x + offset_x;
+					const tmp_y = y + offset_y;
 
 					if (tmp_x >= 0
 						&& tmp_y >= 0
@@ -48,14 +48,14 @@
 
 	// generates a new generation from an older one
 	function step(grid) {
-		new_grid = []
+		const new_grid = []
 
 		for (let x = 0; x < grid.length; x++) {
-			row = []
+			const row = []
 			for (let y = 0; y < grid[x].length; y++) {
 
-				alive = grid[x][y];
-				alive_neighbors = count_alive_neighbors(grid, x, y);
+				let alive = grid[x][y];
+				const alive_neighbors = count_alive_neighbors(grid, x, y);
 
 				if (alive && ( (alive_neighbors < 2) || (alive_neighbors > 3) ) ) {
 					alive = 0;
@@ -70,15 +70,6 @@
 		return new_grid;
 	}
 
-	function create_canvas(width, height) {
-		const canvas = document.createElement("canvas");
-		canvas.width = width;
-		canvas.height = height;
-		canvas.style.margin = "0 auto";
-		canvas.style.display = "block";
-		return canvas
-	}
-	
 	function init_body(canvas) {
 		const { body } = document;
 		body.style.background = bgcolor;
@@ -87,6 +78,16 @@
 		body.appendChild(canvas);
 	}
 
+	function create_canvas(width, height) {
+		const canvas = document.createElement("canvas");
+		canvas.width = width;
+		canvas.height = height;
+		canvas.style.margin = "0 auto";
+		canvas.style.display = "block";
+		init_body(canvas);
+		return canvas
+	}
+	
 	function draw(grid, canvas) {
 		const ctx = canvas.getContext("2d");
 		ctx.fillStyle = bgcolor;
@@ -104,10 +105,8 @@
 	function init() {
 
 		const canvas = create_canvas(cwidth, cheight);
-		var grid = generate_grid(hcount, vcount);
+		let grid = generate_grid(hcount, vcount);
 
-		init_body(canvas);
-		
 		setInterval(() => {
 			grid = step(grid);
 			draw(grid, canvas);
