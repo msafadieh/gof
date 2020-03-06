@@ -24,6 +24,28 @@
 		return grid;
 	}
 
+	function count_alive_neighbors(grid, x, y) {
+		let alive_neighbors = 0;
+
+		for (let offset_x = -1; offset_x < 2; offset_x++) {
+			for (let offset_y = -1; offset_y < 2; offset_y++) {
+
+				if (offset_y || offset_x) {
+					let tmp_x = x + offset_x;
+					let tmp_y = y + offset_y;
+
+					if (tmp_x >= 0
+						&& tmp_y >= 0
+						&& tmp_x < grid.length
+						&& tmp_y < grid[x].length) {
+							alive_neighbors += grid[tmp_x][tmp_y];
+					}
+				}
+			}
+		}
+		return alive_neighbors;
+	}
+
 	// generates a new generation from an older one
 	function step(grid) {
 		new_grid = []
@@ -33,24 +55,7 @@
 			for (let y = 0; y < grid[x].length; y++) {
 
 				alive = grid[x][y];
-				alive_neighbors = 0;
-
-				for (let offset_x = -1; offset_x < 2; offset_x++) {
-					for (let offset_y = -1; offset_y < 2; offset_y++) {
-
-						if (offset_y || offset_x) {
-							let tmp_x = x + offset_x;
-							let tmp_y = y + offset_y;
-
-							if (tmp_x >= 0 
-								&& tmp_y >= 0
-								&& tmp_x < grid.length
-								&& tmp_y < grid[x].length) {
-								alive_neighbors += grid[tmp_x][tmp_y];
-							}
-						}
-					}
-				}
+				alive_neighbors = count_alive_neighbors(grid, x, y);
 
 				if (alive && ( (alive_neighbors < 2) || (alive_neighbors > 3) ) ) {
 					alive = 0;
