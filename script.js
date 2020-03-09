@@ -1,6 +1,6 @@
 (function() {
 	/* CONSTANTS */
-	const size = 5; 		 // size of cell in px
+	const size = 10; 		 // size of cell in px
 	const bgcolor = "black";
 	const fgcolor = "purple";
 	const gps = 10;			 // generations per second
@@ -93,10 +93,15 @@
 		ctx.fillStyle = bgcolor;
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = fgcolor;
+		ctx.strokeStyle = "#222";
 		for (let i = 0; i < grid.length; i++) {
 			for (let j = 0; j < grid[i].length; j++) {
 				if (grid[i][j]) {
 					ctx.fillRect(i*size, j*size, size, size);
+				} else {
+					ctx.beginPath();
+					ctx.rect(i*size, j*size, size, size);
+					ctx.stroke();
 				}
 			}
 		}
@@ -107,10 +112,22 @@
 		const canvas = create_canvas(cwidth, cheight);
 		let grid = generate_grid(hcount, vcount);
 
-		setInterval(() => {
-			grid = step(grid);
+		canvas.onclick = (e) => {
+			const x = Math.floor((e.clientX - canvas.offsetLeft) / size);
+			const y = Math.floor((e.clientY - canvas.offsetTop) / size);
+			grid[x][y] = !grid[x][y];
 			draw(grid, canvas);
-		}, 1000 / gps);
+		}
+
+		function startInterval() {
+			return setInterval(() => {
+				grid = step(grid);
+				draw(grid, canvas);
+			}, 1000 / gps);
+		}
+
+		let id = startInterval();
+		document.onkeydown = () => id = id ? clearInterval(id) : startInterval();
 	}
 
 	init();
