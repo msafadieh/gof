@@ -1,6 +1,6 @@
 (function() {
 	/* CONSTANTS */
-	const size = 10; 		 // size of cell in px
+	const size = 10 * window.devicePixelRatio; 	// size of cell in px
 	const bgcolor = "black";
 	const fgcolor = "purple";
 	const gps = 10;			 // generations per second
